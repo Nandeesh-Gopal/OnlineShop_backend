@@ -1,0 +1,23 @@
+create database onlineShop;
+use onlineShop;
+create table users(
+	id int auto_increment primary key,
+    name varchar(25),
+    email varchar(50) unique,
+    password varchar(50)
+)
+select * from users;
+truncate users;
+
+drop table users;
+
+create table product(
+	id int auto_increment primary key,
+	product varchar(20),
+    description varchar(50),
+    prize int
+)
+select * from product;
+drop table product;
+
+alter table users add phonenumber int

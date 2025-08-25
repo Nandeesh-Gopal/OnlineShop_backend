@@ -6,7 +6,15 @@ const app=express()
 app.use(cors())
 app.use(express.json())
 
-const db = process.env.db-connection
+const db =mysql.createConnection(
+    {
+        host:"localhost",
+        user:"root",
+        password:"",
+        database:"onlineShop",
+        port:3308
+    }
+)
 db.connect(err=>{
     if(err){
         console.log("err:",err)
@@ -15,6 +23,7 @@ db.connect(err=>{
         console.log("success")
     }
 })
+app.use("/signup",require("./src/routes/signup.js"))
 app.post("/signup",(req,res)=>{
     const {name,email,password,phonenumber}=req.body
     const sql="insert into users (name,email,password,phonenumber) values (?,?,?,?)"

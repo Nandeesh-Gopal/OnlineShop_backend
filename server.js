@@ -1,9 +1,12 @@
 const express =require("express")
 const cors =require("cors")
 const mysql=require("mysql2")
-const { connection } = require("mongoose")
+const jwt =require("jsonwebtoken")
 const app=express()
-app.use(cors())
+
+app.use(cors({
+    origin:"http://localhost:3000"
+}))
 app.use(express.json())
 
 const db =mysql.createConnection(
@@ -17,13 +20,12 @@ const db =mysql.createConnection(
 )
 db.connect(err=>{
     if(err){
-        console.log("err:",err)
+        console.log("db connection err:",err)
     }
     else{
-        console.log("success")
+        console.log("db connection success")
     }
 })
-app.use("/signup",require("./src/routes/signup.js"))
 app.post("/signup",(req,res)=>{
     const {name,email,password,phonenumber}=req.body
     const sql="insert into users (name,email,password,phonenumber) values (?,?,?,?)"
@@ -33,9 +35,16 @@ app.post("/signup",(req,res)=>{
             res.json({message:"Duplicate entry"})
         }
         else{
-            console.log("user inserted",results.insertId)
+            const sql ="insert into cart (user_id) values(?)"
+            db.query(sql,[results.insertId],(err)=>{
+                if(err){
+                    console.log("err in creation of cart",err)
+                }
+                else{
+                    console.log("success in adding cart")
+                }
+            })
             res.json({message:"success"})
-
         }
     })
 })
@@ -49,8 +58,21 @@ app.post("/login",(req,res)=>{
             res.json({message:"db err"})
         }
         if(results.length===1){
+            const user=results[0]
+            const token =jwt.sign(
+                {id : user.id},
+                "process.env.secretkey",
+                {expiresIn:"1d"}
+            )
             console.log("Login successfull")
-            res.json({message:"Login success"})
+            const sql="select id from cart where user_id=?"
+            db.query(sql,[user.id],(err,cresults)=>{
+                if(err){
+                    console.log("fetching cart is err",err)
+                }
+                    const cart_id=cresults.length ?cresults[0].id:null
+                    res.json({message:"Login success",token,userid:user.id,cart_id})
+                })
         }
         else{
             console.log(err)

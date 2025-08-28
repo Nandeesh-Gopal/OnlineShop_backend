@@ -8,9 +8,11 @@ create table users(
 )
 select * from users;
 truncate users;
+truncate cart;
+truncate products
 
 drop table users;
-
+delete from cart where user_id is null
 create table product(
 	id int auto_increment primary key,
 	product varchar(20),
@@ -39,3 +41,5 @@ create table cart_items(
 )
 select * from cart
 alter table cart drop column product_id
+delete from users
+delete from cart

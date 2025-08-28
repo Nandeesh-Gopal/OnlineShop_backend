@@ -106,6 +106,11 @@ app.get("/products",(req,res)=>{
         }
     })
 })
+app.post("/add-to-cart",(req,res)=>{
+    const {cart_id,product_id,quantity}=req.body
+    const sql="insert into cart_items (cart_id,product_id,quantity) values(?,?,?)"
+    db.query(sql,[cart_id,product_id,quantity],)
+})
 app.listen(5000,()=>{
     console.log("server created")
 })

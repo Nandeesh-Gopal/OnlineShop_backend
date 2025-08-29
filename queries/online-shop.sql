@@ -40,6 +40,7 @@ create table cart_items(
     foreign key (product_id) references product(id) on delete cascade
 )
 select * from cart
+select * from cart_items
 alter table cart drop column product_id
 delete from users
 delete from cart

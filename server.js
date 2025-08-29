@@ -101,15 +101,28 @@ app.get("/products",(req,res)=>{
             console.log("err in fetch products details from db",err)
         }
         else{
-            console.log("product fetch success")
             res.json(result)
         }
     })
 })
 app.post("/add-to-cart",(req,res)=>{
-    const {cart_id,product_id,quantity}=req.body
+    const {cartid,productid,quantity}=req.body
     const sql="insert into cart_items (cart_id,product_id,quantity) values(?,?,?)"
-    db.query(sql,[cart_id,product_id,quantity],)
+    db.query(sql,[cartid,productid,quantity],err=>{
+        if(err){
+            console.log("Error in insertion")
+            res.json({message:"Error adding to cart"})
+        }
+        else{
+            res.json({message:"product added to cart"})
+        }
+    })
+})
+app.get("/fetch-cart",(req,res)=>{
+    const cartid=req.query.cartid
+    if(!cartid){
+        res.json({message:})
+    }
 })
 app.listen(5000,()=>{
     console.log("server created")

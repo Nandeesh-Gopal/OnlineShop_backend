@@ -121,9 +121,38 @@ app.post("/add-to-cart",(req,res)=>{
 app.get("/fetch-cart",(req,res)=>{
     const cartid=req.query.cartid
     if(!cartid){
-        res.json({message:})
+        res.json([])
     }
+    const sql=`select p.id,p.product, p.description, p.prize, ci.quantity 
+                from cart_items ci 
+                join product p on ci.product_id = p.id 
+                where ci.cart_id =?`
+    db.query(sql,[cartid],(err,result)=>{
+        if(err){
+            console.log(err);
+            return res.json({message:"err in fetching cart items"})
+        }
+        res.json(result);
+    })
 })
+app.post("/place-order", (req, res) => {
+  const { productId, productName, price, quantity, address, total } = req.body;
+
+  db.query(
+  "INSERT INTO orders (product_id, product_name, product_price, quantity, address, total) VALUES (?,?,?,?,?,?)",
+  [order.productid, order.productname, order.productprice, order.quantity, order.address, order.total],
+  (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    } else {
+      res.send({ message: "Order placed successfully", orderId: result.insertId });
+    }
+  }
+);
+
+});
+
 app.listen(5000,()=>{
     console.log("server created")
 })

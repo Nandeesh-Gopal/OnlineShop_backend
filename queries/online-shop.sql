@@ -1,18 +1,10 @@
-create database onlineShop;
-use onlineShop;
 create table users(
 	id int auto_increment primary key,
     name varchar(25),
     email varchar(50) unique,
-    password varchar(50)
+    password varchar(50),
+    phonenumber int
 )
-select * from users;
-truncate users;
-truncate cart;
-truncate products
-
-drop table users;
-delete from cart where user_id is null
 create table product(
 	id int auto_increment primary key,
 	product varchar(20),
@@ -20,17 +12,11 @@ create table product(
     prize int,
     stock int
 )
-select * from product;
-drop table product;
-
-alter table users add phonenumber int
-
 create table cart(
 	id int auto_increment primary key,
     user_id int,
     foreign key (user_id) references users(id) on delete cascade
 )
-drop table cart;
 create table cart_items(
 	id int auto_increment primary key,
     cart_id int,
@@ -39,8 +25,13 @@ create table cart_items(
     foreign key (cart_id) references cart(id) on delete cascade,
     foreign key (product_id) references product(id) on delete cascade
 )
-select * from cart
-select * from cart_items
-alter table cart drop column product_id
-delete from users
-delete from cart
+create table orders(
+	id int auto_increment primary key,
+    productid int,
+    productname varchar(50),
+    productprice int,
+    quantity int,
+    address varchar(50),
+    total int,
+    phone int
+)

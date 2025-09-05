@@ -1,6 +1,10 @@
-const express=require("express")
-const app=express.Router()
-const {addproduct,fetchproduct}=require("../services/productService")
-app.post("/add",addproduct)
-app.get("/fetch",fetchproduct)
-module.exports=app
+const express = require("express");
+const { addProduct, getAllProducts, getProductById } = require("../services/productService");
+
+const router = express.Router();
+
+router.post("/add", addProduct);
+router.get("/all", getAllProducts);
+router.get("/buy/:id", getProductById);
+
+module.exports = router;

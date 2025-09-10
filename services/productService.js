@@ -39,5 +39,17 @@ const getProductById = (req, res) => {
     res.json(result[0]);
   });
 };
-
-module.exports = { addProduct, getAllProducts, getProductById };
+const searchProducts =(req,res)=>{
+  const {q}=req.body;
+  if (!q) return res.json([])
+  const item=`%${q}%`
+  const sql = "select * from product where product like ? or description like ?"
+  db.query(sql,[item,item],(err,result)=>{
+    if(err){
+      console.log("err in database",err)
+      res.json({message:"some error in fetching from the database"})
+    }
+    res.json(result)
+  })
+}
+module.exports = { addProduct, getAllProducts, getProductById ,searchProducts};

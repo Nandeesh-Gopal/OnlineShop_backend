@@ -39,17 +39,33 @@ const getProductById = (req, res) => {
     res.json(result[0]);
   });
 };
-const searchProducts =(req,res)=>{
-  const {q}=req.body;
-  if (!q) return res.json([])
-  const item=`%${q}%`
-  const sql = "select * from product where product like ? or description like ?"
-  db.query(sql,[item,item],(err,result)=>{
-    if(err){
-      console.log("err in database",err)
-      res.json({message:"some error in fetching from the database"})
-    }
-    res.json(result)
-  })
-}
+const searchProducts = (req, res) => {
+  const { q = "", min, max } = req.query;
+
+  let sql = "SELECT * FROM product WHERE 1=1";
+  const params = [];
+
+  if (q) {
+    sql += " AND (product LIKE ? OR description LIKE ?)";
+    const like = `%${q}%`;
+    params.push(like, like);
+  }
+
+  if (min) {
+    sql += " AND prize >= ?";
+    params.push(Number(min));
+  }
+
+  if (max) {
+    sql += " AND prize <= ?";
+    params.push(Number(max));
+  }
+
+  db.query(sql, params, (err, rows) => {
+    if (err) return res.status(500).json({ message: "DB error" });
+    res.json(rows);
+  });
+};
+
+
 module.exports = { addProduct, getAllProducts, getProductById ,searchProducts};

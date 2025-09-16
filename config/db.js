@@ -1,13 +1,13 @@
 const mysql=require("mysql2")
-const db =mysql.createConnection(
-    {
-        host:"localhost",
-        user:"root",
-        password:"",
-        database:"onlineShop",
-        port:3308
-    }
-)
+const db = mysql.createConnection({
+    host: "host.docker.internal",
+    user: "root",
+    password: "",
+    database: "onlineShop",
+    port: 3308
+});
+
+
 db.connect(err=>{
     if(err){
         console.log("db connection err:",err)

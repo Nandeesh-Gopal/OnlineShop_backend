@@ -1,10 +1,10 @@
 const mysql=require("mysql2")
 const db = mysql.createConnection({
-    host: "host.docker.internal",
+    host: "mysql-container",
     user: "root",
-    password: "",
-    database: "onlineShop",
-    port: 3308
+    password: "new_root_password",
+    database: "onlineshop",
+    port: 3306
 });
 
 

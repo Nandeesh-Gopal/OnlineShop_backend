@@ -1,8 +1,8 @@
 const mysql=require("mysql2")
 const db = mysql.createConnection({
-    host: "mysql-container",
+    host: "mysql",
     user: "root",
-    password: "new_root_password",
+    password: "helllo",
     database: "onlineshop",
     port: 3306
 });

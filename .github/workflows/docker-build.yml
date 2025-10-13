@@ -19,11 +19,11 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERNAME}}
-          password: ${{ secrets.DOCKEPASS }}
+          password: ${{ secrets.DOCKERPASS }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERPASS }}/onlineshop-backend:latest
+          tags: ${{ secrets.DOCKERNAME }}/onlineshop-backend:latest

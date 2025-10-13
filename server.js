@@ -26,7 +26,7 @@ app.use("/cart", cartRoutes);
 app.use("/order", orderRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Backend server is running successfully!");
+  res.send("Backend server is running!");
 });
 
 app.use((err, req, res, next) => {

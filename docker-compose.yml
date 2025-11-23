@@ -1,21 +1,38 @@
-version: '3'
-services:
-  db:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: onlineShop
-    ports:
-      - "3308:3306"
+version: "3.9"
 
+services:
   backend:
     build: .
+    container_name: onlineshop_backend
+    restart: always
     ports:
-      - "5000:5000"
-    depends_on:
-      - db
+      - "5001:5000"
     environment:
-      DB_HOST: db
+      DB_HOST: mysql
       DB_USER: root
-      DB_PASSWORD: root
-      DB_NAME: onlineShop
+      DB_PASSWORD: example
+      DB_NAME: onlineshop
+    depends_on:
+      - mysql
+    networks:
+      - onlineshop_net
+
+  mysql:
+    image: mysql:8.0
+    container_name: onlineshop_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: onlineshop
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - onlineshop_net
+
+networks:
+  onlineshop_net:
+
+volumes:
+  db_data:

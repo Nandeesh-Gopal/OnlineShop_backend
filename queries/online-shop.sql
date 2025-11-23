@@ -12,6 +12,8 @@ create table product(
     prize int,
     stock int
 )
+use onlineshop
+select * from product
 create table cart(
 	id int auto_increment primary key,
     user_id int,
@@ -35,3 +37,5 @@ create table orders(
     total int,
     phone int
 )
+
+select * from product where id = 8
